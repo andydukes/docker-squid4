@@ -10,13 +10,15 @@ netdb_filename stdio:/var/cache/squid4/netdb.state
 # Visible hostname to allow multi-squid
 visible_hostname {{VISIBLE_HOSTNAME|default:"docker-squid4"}}
 
+# changed cache to 100 Mb
 {% if DISABLE_CACHE|default:"" != "yes" %}
 # Cache directory is fixed since we'll bind mount.
-cache_dir aufs /var/cache/squid4 {{MAX_CACHE_SIZE|default:"40000"}} 16 256
+cache_dir aufs /var/cache/squid4 {{MAX_CACHE_SIZE|default:"100"}} 16 256
 {% endif %}
 
-maximum_object_size {{MAX_OBJECT_SIZE|default:"1536 MB"}}
-cache_mem {{MEM_CACHE_SIZE|default:"128 MB"}}
+# changed max_object_size to default 4 MB and mem_cache_size to default 256
+maximum_object_size {{MAX_OBJECT_SIZE|default:"4 MB"}}
+cache_mem {{MEM_CACHE_SIZE|default:"256 MB"}}
 
 tls_outgoing_options capath=/etc/ssl/certs \
     options={{TLS_OPTIONS|default:"NO_SSLv3,NO_TLSv1"}} \
