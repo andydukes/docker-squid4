@@ -1,6 +1,9 @@
+# Build on latest ubuntu, squid 4.4, changed cache_dir to standard, changed max_object_size to standard 4Mb
+
 ARG DOCKER_PREFIX=
 
-FROM ${DOCKER_PREFIX}ubuntu:artful
+# Build on latest ubuntu
+FROM ${DOCKER_PREFIX}ubuntu:latest
 
 ARG TRUST_CERT=
 
@@ -19,7 +22,8 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get build-dep -y squid && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y wget tar xz-utils libssl-dev
 
-ARG SQUID_VERSION=4.0.21
+# Build on Latest Squid
+ARG SQUID_VERSION=4.4
 
 # TODO: verify the squid download with the signing key
 RUN mkdir /src \
@@ -98,6 +102,7 @@ RUN wget -O /tmp/doh.tgz \
 COPY squid.conf.p2 /squid.conf.p2
 COPY squid.bsh /squid.bsh
 
+# Corrected Max Object size from 1536Mb to 4MB. Reset cache_dir paramaeter to defaults
 # Configuration environment
 ENV HTTP_PORT=3128 \
     ICP_PORT= \
@@ -106,9 +111,9 @@ ENV HTTP_PORT=3128 \
     MITM_CERT= \
     MITM_KEY= \
     VISIBLE_HOSTNAME=docker-squid4 \
-    MAX_CACHE_SIZE=40000 \
-    MAX_OBJECT_SIZE="1536 MB" \
-    MEM_CACHE_SIZE="128 MB" \
+    MAX_CACHE_SIZE=100 \
+    MAX_OBJECT_SIZE="4 MB" \
+    MEM_CACHE_SIZE="256 MB" \
     DNS_OVER_HTTPS_LISTEN_ADDR="127.0.0.153:53" \
     DNS_OVER_HTTPS_SERVER="https://dns.google.com/resolve" \
     DNS_OVER_HTTPS_NO_FALLTHROUGH="" \
