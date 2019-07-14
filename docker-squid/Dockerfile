@@ -1,4 +1,4 @@
-# Build on latest ubuntu, squid 4.4, changed cache_dir to standard, changed max_object_size to standard 4Mb
+# Build on latest ubuntu, squid 4.8, changed cache_dir to standard, changed max_object_size to standard 4Mb
 
 ARG DOCKER_PREFIX=
 
@@ -23,7 +23,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y wget tar xz-utils libssl-dev
 
 # Build on Latest Squid
-ARG SQUID_VERSION=4.4
+ARG SQUID_VERSION=4.8
 
 # TODO: verify the squid download with the signing key
 RUN mkdir /src \
@@ -31,7 +31,7 @@ RUN mkdir /src \
     && wget http://www.squid-cache.org/Versions/v4/squid-$SQUID_VERSION.tar.xz \
     && mkdir squid \
     && tar -C squid --strip-components=1 -xvf squid-$SQUID_VERSION.tar.xz
-    
+
 RUN cd /src/squid && \
     ./configure \
         --prefix=/usr \
@@ -60,7 +60,7 @@ RUN cd /src/squid && \
 		--enable-zph-qos \
 		--with-openssl \
 		--enable-ssl \
-		--enable-ssl-crtd \ 
+		--enable-ssl-crtd \
 		--disable-translation \
 		--with-swapdir=/var/spool/squid4 \
 		--with-logdir=/var/log/squid4 \
@@ -69,7 +69,7 @@ RUN cd /src/squid && \
 		--with-large-files \
 		--with-default-user=proxy \
         	--disable-arch-native
-		
+
 ARG CONCURRENCY=1
 
 RUN cd /src/squid && \
