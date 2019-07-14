@@ -1,5 +1,7 @@
 # Squid4 with SSL proxying
 
+2019-07-14 Updated for Squid 4.8
+
 This dockerfile builds a Squid 4 instance and includes all the necessary
 tooling to run it as a MITM (man-in-the-middle) SSL proxy.
 
@@ -21,17 +23,17 @@ variables:
  * `MITM_PROXY`
     If set, tries to enable MITM SSL proxy functionality (requires CERT and KEY)
  * `MITM_CERT`
-    If set, the given PEM certificate is copied and used as the CA authority for 
+    If set, the given PEM certificate is copied and used as the CA authority for
     MITM'ing connections.
  *  `MITM_KEY`
-    If set, the given PEM certificate is copied and used as the signing key for 
+    If set, the given PEM certificate is copied and used as the signing key for
     the MITM CA.
  * `VISIBLE_HOSTNAME`
     Default: `docker-squid4`
     Should be set to a unique value if you are chaining multiple proxy servers.
  * `MAX_CACHE_SIZE`
     Default: `40000`
-    Cache size in megabytes. The cache defaults to `/var/cache/squid4`. You 
+    Cache size in megabytes. The cache defaults to `/var/cache/squid4`. You
     should mount a volume here to make it persistent.
  * `MAX_OBJECT_SIZE`
     Default `"1536 MB"`
@@ -132,7 +134,7 @@ as a local MITM on your machine:
 sudo mkdir -p /srv/squid/cache
 docker run -it -p 3128:127.0.0.1:3128 --rm \
     -v /srv/squid/cache:/var/cache/squid4 \
-    -v /etc/ssl/certs:/etc/ssl/certs:ro \ 
+    -v /etc/ssl/certs:/etc/ssl/certs:ro \
     -v /etc/ssl/private/local_mitm.pem:/local-mitm.pem:ro \
     -v /etc/ssl/certs/local_mitm.pem:/local-mitm.crt:ro \
     -e MITM_CERT=/local-mitm.crt \
